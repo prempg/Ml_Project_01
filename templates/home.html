@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Exam Performance Prediction</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7fb;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background-color: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.10);
+        }
+
+        .title {
+            text-align: center;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 35px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .mb-3 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .submit-container {
+            margin-top: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 22px;
+            text-align: center;
+            background-color: #f0f8ff;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+        }
+
+        .result h2 {
+            color: #0056b3;
+        }
+
+        @media (max-width: 700px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .container {
+                padding: 22px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1 class="title">
+            Student Exam Performance Indicator
+        </h1>
+
+        <p class="subtitle">
+            Predict Student Exam Score using Machine Learning
+        </p>
+
+
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+
+            <div class="form-grid">
+
+
+                <!-- ================================================= -->
+                <!-- 1. HOURS STUDIED -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Hours Studied
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="number"
+                        name="Hours_Studied"
+                        placeholder="Enter hours studied"
+                        min="0"
+                        max="24"
+                        step="0.1"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 2. ATTENDANCE -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Attendance (%)
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="number"
+                        name="Attendance"
+                        placeholder="Enter attendance percentage"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 3. PARENTAL INVOLVEMENT -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Parental Involvement
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Parental_Involvement"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select parental involvement
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 4. ACCESS TO RESOURCES -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Access to Resources
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Access_to_Resources"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select access to resources
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 5. EXTRACURRICULAR ACTIVITIES -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Extracurricular Activities
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Extracurricular_Activities"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select option
+                        </option>
+
+                        <option value="Yes">
+                            Yes
+                        </option>
+
+                        <option value="No">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 6. MOTIVATION LEVEL -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Motivation Level
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Motivation_Level"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select motivation level
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 7. SLEEP HOURS -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Sleep Hours
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="number"
+                        name="Sleep_Hours"
+                        placeholder="Enter sleep hours"
+                        min="0"
+                        max="24"
+                        step="0.1"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 8. PREVIOUS SCORES -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Previous Scores
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="number"
+                        name="Previous_Scores"
+                        placeholder="Enter previous score"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 9. INTERNET ACCESS -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Internet Access
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Internet_Access"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select internet access
+                        </option>
+
+                        <option value="Yes">
+                            Yes
+                        </option>
+
+                        <option value="No">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 10. TUTORING SESSIONS -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Tutoring Sessions
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="number"
+                        name="Tutoring_Sessions"
+                        placeholder="Enter number of sessions"
+                        min="0"
+                        max="20"
+                        step="1"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 11. FAMILY INCOME -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Family Income
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Family_Income"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select family income
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 12. TEACHER QUALITY -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Teacher Quality
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Teacher_Quality"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select teacher quality
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 13. SCHOOL TYPE -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        School Type
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="School_Type"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select school type
+                        </option>
+
+                        <option value="Public">
+                            Public
+                        </option>
+
+                        <option value="Private">
+                            Private
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 14. PEER INFLUENCE -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Peer Influence
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Peer_Influence"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select peer influence
+                        </option>
+
+                        <option value="Negative">
+                            Negative
+                        </option>
+
+                        <option value="Neutral">
+                            Neutral
+                        </option>
+
+                        <option value="Positive">
+                            Positive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 15. PHYSICAL ACTIVITY -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Physical Activity (hours/week)
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="number"
+                        name="Physical_Activity"
+                        placeholder="Enter physical activity"
+                        min="0"
+                        max="24"
+                        step="0.1"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 16. LEARNING DISABILITIES -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Learning Disabilities
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Learning_Disabilities"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select option
+                        </option>
+
+                        <option value="Yes">
+                            Yes
+                        </option>
+
+                        <option value="No">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 17. PARENTAL EDUCATION LEVEL -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Parental Education Level
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Parental_Education_Level"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select education level
+                        </option>
+
+                        <option value="High School">
+                            High School
+                        </option>
+
+                        <option value="College">
+                            College
+                        </option>
+
+                        <option value="Postgraduate">
+                            Postgraduate
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 18. DISTANCE FROM HOME -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Distance From Home
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Distance_from_Home"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select distance
+                        </option>
+
+                        <option value="Near">
+                            Near
+                        </option>
+
+                        <option value="Moderate">
+                            Moderate
+                        </option>
+
+                        <option value="Far">
+                            Far
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- 19. GENDER -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Gender
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="Gender"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- SUBMIT -->
+                <!-- ================================================= -->
+
+                <div class="submit-container full-width">
+
+                    <input
+                        class="btn"
+                        type="submit"
+                        value="Predict Exam Score"
+                    >
+
+                </div>
+
+
+            </div>
+
+        </form>
+
+
+        <!-- ================================================= -->
+        <!-- PREDICTION RESULT -->
+        <!-- ================================================= -->
+
+        {% if results is defined %}
+
+        <div class="result">
+
+            <h2>
+                Predicted Exam Score:
+                {{ "%.2f"|format(results) }}
+            </h2>
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+</body>
+
+</html>
