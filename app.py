@@ -1,6 +1,6 @@
 from flask import Flask,request,render_template
 import numpy as np
-import pandas as pd
+import pandas as pd 
 
 from sklearn.preprocessing import StandardScaler
 from src.pipelines.prediction_pipeline import CustomData,PredictPipeline
