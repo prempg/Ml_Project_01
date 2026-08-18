@@ -12,7 +12,6 @@ list_of_files=[
     f"src/components/data_ingestion.py",
     f"src/components/data_transformation.py",
     f"src/components/model_tranier.py",
-    f"src/components/model_monitering.py",
     f"src/pipelines/__init__.py",
     f"src/pipelines/training_pipeline.py",
     f"src/pipelines/prediction_pipeline.py",
